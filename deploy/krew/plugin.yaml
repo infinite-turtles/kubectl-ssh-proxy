@@ -1,0 +1,55 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: kubectl-ssh-proxy
+spec:
+  version: "v0.1.0"
+  platforms:
+  - selector:
+      matchLabels:
+        os: linux
+        arch: amd64
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.1.0/kubectl-ssh-proxy_linux_amd64.tar.gz
+    sha256: ""
+    files:
+    - from: "./kubectl-ssh-proxy"
+      to: "."
+    - from: LICENSE
+      to: "."
+    bin: "kubectl-ssh-proxy"
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: amd64
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.1.0/kubectl-ssh-proxy_darwin_amd64.tar.gz
+    sha256: ""
+    files:
+    - from: "./kubectl-ssh-proxy"
+      to: "."
+    - from: LICENSE
+      to: "."
+    bin: "kubectl-ssh-proxy"
+  - selector:
+      matchLabels:
+        os: windows
+        arch: amd64
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.1.0/kubectl-ssh-proxy_windows_amd64.zip
+    sha256: ""
+    files:
+    - from: "/kubectl-ssh-proxy.exe"
+      to: "."
+    - from: LICENSE
+      to: "."
+    bin: "kubectl-ssh-proxy.exe"
+  shortDescription: A new plugin
+  homepage: https://github.com/infinite-turtles/kubectl-ssh-proxy
+  caveats: |
+    Usage:
+      $ kubectl kubectl-ssh-proxy
+
+    For additional options:
+      $ kubectl kubectl-ssh-proxy --help
+      or https://github.com/infinite-turtles/kubectl-ssh-proxy/blob/v0.1.0/doc/USAGE.md
+
+  description: |
+    This is a new plugin
