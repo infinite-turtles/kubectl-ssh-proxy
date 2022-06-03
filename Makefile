@@ -4,7 +4,7 @@ test:
 
 .PHONY: bin
 build: fmt vet
-	go build -o bin/kubectl-ssh-proxy
+	go build -trimpath -o ./bin/kssh cmd/kubectl-ssh-proxy.go
 
 .PHONY: fmt
 fmt:
