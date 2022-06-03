@@ -1,0 +1,28 @@
+project_name: kubectl-ssh-proxy
+release:
+  github:
+    owner: infinite-turtles
+    name: kubectl-ssh-proxy
+builds:
+  - id: kubectl-ssh-proxy
+    goos:
+    - linux
+    - windows
+    - darwin
+    goarch:
+    - amd64
+    - "386"
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    main: cmd/kubectl-ssh-proxy.go
+    ldflags: -s -w
+      -X github.com/infinite-turtles/kubectl-ssh-proxy/pkg/version.version=
+archives:
+  - id: kubectl-ssh-proxy
+    builds:
+    - kubectl-ssh-proxy
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+    - goos: windows
+      format: zip
