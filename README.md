@@ -2,6 +2,19 @@
 
 Proxy OpenSSH client tools through Kubernetes pod
 
+```mermaid
+flowchart LR
+    subgraph client
+        Start[kubectl ssh-proxy]
+    end
+    subgraph k8s
+        kube-api-server <-->|exec| pod(ssh-proxy-pod)
+        pod <--> nc
+        nc <-->|ssh| End[targetHost]
+    end
+    Start[kubectl ssh-proxy] <-->|HTTPS| kube-api-server
+```
+
 ## Prerequisites
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
