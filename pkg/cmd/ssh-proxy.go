@@ -10,13 +10,18 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	batchv1 "k8s.io/api/batch/v1"
 	core "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 )
+
+// Cleanup ssh-proxy job and pod immediately after completion
+const jobTTL int32 = 0
 
 var (
 	use = "%[1]s [flags] ssh|scp|sftp [flags] [arguments]"
@@ -147,12 +152,12 @@ func (o *ProxyOptions) Run(args []string) error {
 		sshProxyPod = pods.Items[0].Name
 	} else {
 		fmt.Printf("No proxy pod found in %s namespace\n", o.namespace)
-		pod := getPodObject()
-		pod, err := clientset.CoreV1().Pods(o.namespace).Create(context.TODO(), pod, metav1.CreateOptions{})
+		job := getJobObject()
+		job, err := clientset.BatchV1().Jobs(o.namespace).Create(context.TODO(), job, metav1.CreateOptions{})
 		if err != nil {
 			return err
 		}
-		sshProxyPod = pod.Name
+		sshProxyPod = job.Spec.Template.ObjectMeta.Name
 		fmt.Printf("pod/%s created\n", sshProxyPod)
 	}
 
@@ -201,24 +206,33 @@ func baseName() string {
 	return fileName
 }
 
-func getPodObject() *core.Pod {
-	return &core.Pod{
+func getJobObject() *batchv1.Job {
+	ttl := jobTTL
+	return &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			GenerateName: "ssh-proxy-",
-			Labels: map[string]string{
-				"app": "kubectl-ssh-proxy",
-			},
+			Name: "ssh-proxy",
 		},
-		Spec: core.PodSpec{
-			RestartPolicy: core.RestartPolicyNever,
-			Containers: []core.Container{
-				{
-					Name:            "busybox",
-					Image:           "busybox:latest",
-					ImagePullPolicy: core.PullIfNotPresent,
-					Command: []string{
-						"sleep",
-						"12h",
+		Spec: batchv1.JobSpec{
+			TTLSecondsAfterFinished: &ttl,
+			Template: v1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "ssh-proxy",
+					Labels: map[string]string{
+						"app": "kubectl-ssh-proxy",
+					},
+				},
+				Spec: v1.PodSpec{
+					RestartPolicy: v1.RestartPolicyNever,
+					Containers: []core.Container{
+						{
+							Name:            "busybox",
+							Image:           "public.ecr.aws/docker/library/busybox:glibc",
+							ImagePullPolicy: core.PullIfNotPresent,
+							Command: []string{
+								"sleep",
+								"12h",
+							},
+						},
 					},
 				},
 			},
