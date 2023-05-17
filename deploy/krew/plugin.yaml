@@ -9,8 +9,8 @@ spec:
       matchLabels:
         os: linux
         arch: amd64
-    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.2.0/kubectl-ssh-proxy_linux_amd64.tar.gz
-    sha256: "e1ab9a583d1b7e9cdf8af30eec4f1452aae83e62dfe9aaf27080aff13ee9113c"
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.3.0/kubectl-ssh-proxy_linux_amd64.tar.gz
+    sha256: "c36c945e07675b39a7b7215cd394a64e1095a4745f909ee1cb2593513d55a0cd"
     files:
     - from: "./kubectl-ssh-proxy"
       to: "."
@@ -19,8 +19,8 @@ spec:
       matchLabels:
         os: darwin
         arch: amd64
-    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.2.0/kubectl-ssh-proxy_darwin_amd64.tar.gz
-    sha256: "5909072a6579f2bcc47fc302597d7978f57876699fc320d61c9551d93a261709"
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.3.0/kubectl-ssh-proxy_darwin_amd64.tar.gz
+    sha256: "68cdfe07837c058af84b4df7b44e4783055c521f27d7da80bce7dcbb857ed2d2"
     files:
     - from: "./kubectl-ssh-proxy"
       to: "."
@@ -29,8 +29,8 @@ spec:
       matchLabels:
         os: windows
         arch: amd64
-    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.2.0/kubectl-ssh-proxy_windows_amd64.zip
-    sha256: "633faab92f25799c04ae53f66878d8dac26e2074d3ce5efe28f180808cd162b4"
+    uri: https://github.com/infinite-turtles/kubectl-ssh-proxy/releases/download/v0.3.0/kubectl-ssh-proxy_windows_amd64.zip
+    sha256: "d088dda5f39a806e39c604d22092432f53b7eee722cca0c87b730b57895f6efb"
     files:
     - from: "/kubectl-ssh-proxy.exe"
       to: "."
