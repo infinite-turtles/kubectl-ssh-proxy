@@ -159,6 +159,7 @@ func (o *ProxyOptions) Run(args []string) error {
 		}
 		sshProxyPod = job.Spec.Template.ObjectMeta.Name
 		fmt.Printf("pod/%s created\n", sshProxyPod)
+		time.Sleep(2 * time.Second)
 	}
 
 	fmt.Printf("Connecting via pod/%s", sshProxyPod)
@@ -223,6 +224,7 @@ func getJobObject() *batchv1.Job {
 				},
 				Spec: v1.PodSpec{
 					RestartPolicy: v1.RestartPolicyNever,
+					Tolerations:   []v1.Toleration{{Operator: v1.TolerationOpExists}},
 					Containers: []core.Container{
 						{
 							Name:            "busybox",
